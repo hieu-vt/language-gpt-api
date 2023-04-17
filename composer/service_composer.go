@@ -10,6 +10,9 @@ import (
 	authUserRPC "lang-gpt-api/services/auth/repository/rpc"
 	authAPI "lang-gpt-api/services/auth/transport/api"
 	authRPC "lang-gpt-api/services/auth/transport/rpc"
+	"lang-gpt-api/services/gpt/business"
+	"lang-gpt-api/services/gpt/repository/mysql"
+	"lang-gpt-api/services/gpt/transport/api"
 	taskBusiness "lang-gpt-api/services/task/business"
 	taskSQLRepository "lang-gpt-api/services/task/repository/mysql"
 	taskUserRPC "lang-gpt-api/services/task/repository/rpc"
@@ -35,6 +38,11 @@ type UserService interface {
 type AuthService interface {
 	LoginHdl() func(*gin.Context)
 	RegisterHdl() func(*gin.Context)
+}
+
+type GptService interface {
+	CreateMessage() func(c *gin.Context)
+	GetListMessage() func(c *gin.Context)
 }
 
 func ComposeUserAPIService(serviceCtx sctx.ServiceContext) UserService {
@@ -94,4 +102,16 @@ func ComposeAuthGRPCService(serviceCtx sctx.ServiceContext) pb.AuthServiceServer
 	authService := authRPC.NewService(biz)
 
 	return authService
+}
+
+func ComposeGptService(serviceCtx sctx.ServiceContext) GptService {
+	db := serviceCtx.MustGet(common.KeyCompMySQL).(common.GormComponent)
+
+	gptRepo := mysql.NewMysqlRepoGpt(db)
+
+	biz := business.NewGptBusiness(gptRepo)
+
+	gptService := api.NewAPI(serviceCtx, biz)
+
+	return gptService
 }
