@@ -9,6 +9,7 @@ import (
 type config struct {
 	grpcPort          int    // for server port listening
 	grpcServerAddress string // for client make grpc client connection
+	ginHost           string
 }
 
 func NewConfig() *config {
@@ -33,6 +34,13 @@ func (c *config) InitFlags() {
 		"localhost:3300",
 		"gRPC server address. Default: localhost:3300",
 	)
+
+	flag.StringVar(
+		&c.ginHost,
+		"gin-host",
+		"localhost",
+		"gRPC server address. Default: localhost:3300",
+	)
 }
 
 func (c *config) Activate(_ sctx.ServiceContext) error {
@@ -49,4 +57,8 @@ func (c *config) GetGRPCPort() int {
 
 func (c *config) GetGRPCServerAddress() string {
 	return c.grpcServerAddress
+}
+
+func (c *config) GetGinHost() string {
+	return c.ginHost
 }

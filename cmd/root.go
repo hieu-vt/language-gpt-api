@@ -66,8 +66,9 @@ var rootCmd = &cobra.Command{
 		v1 := router.Group("/v1")
 
 		SetupRoutes(v1, serviceCtx)
+		configComp := serviceCtx.MustGet(common.KeyCompConf).(common.Config)
 
-		if err := router.Run(fmt.Sprintf(":%d", ginComp.GetPort())); err != nil {
+		if err := router.Run(fmt.Sprintf("%s:%d", configComp.GetGinHost(), ginComp.GetPort())); err != nil {
 			logger.Fatal(err)
 		}
 	},
