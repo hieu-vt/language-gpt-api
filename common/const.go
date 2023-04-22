@@ -7,7 +7,9 @@ const (
 	KeyCompConf  = "config"
 	KeyCompGpt   = "gpt"
 
-	MaskTypeUser = 1
-	MaskTypeTask = 2
-	MaskTypeGpt  = 3
+	MaskTypeUser      = 1
+	MaskTypeTask      = 2
+	MaskTypeGpt       = 3
+	MaskTypeFlashCard = 4
+	MaskTypeCard      = 5
 )

@@ -54,3 +54,26 @@ CREATE TABLE `contexts` (
                        PRIMARY KEY (`id`),
                        KEY `user_id` (`user_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `flashcards` (
+                            `id` int(11) NOT NULL AUTO_INCREMENT,
+                            `user_id` int(11) NOT NULL,
+                            `title` varchar(500) DEFAULT NULL,
+                            `description` text,
+                            `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+                            `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                            PRIMARY KEY (`id`),
+                            KEY `user_id` (`user_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `cards` (
+                             `id` int(11) NOT NULL AUTO_INCREMENT,
+                             `flashcard_id` int(11) NOT NULL,
+                             `front_text` text,
+                             `back_text` text,
+                             `synonyms` text DEFAULT NULL,
+                             `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+                             `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                             PRIMARY KEY (`id`),
+                             KEY `user_id` (`user_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

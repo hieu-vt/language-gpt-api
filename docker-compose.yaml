@@ -8,7 +8,7 @@ services:
     depends_on:
       - mysql
     environment:
-      DB_DSN: "root:@tcp(mysql:3306)/demo_db?charset=utf8mb4&parseTime=True&loc=Local"
+      DB_DSN: "root@ead8686ba57479778a76e:@tcp(localhost:3306)/lang_gpt?charset=utf8mb4&parseTime=True&loc=Local"
       JWT_SECRET: "very-important-please-change-it!"
       GIN_PORT: "3000"
       GRPC_PORT: "3300"
