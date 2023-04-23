@@ -10,6 +10,9 @@ import (
 	authUserRPC "lang-gpt-api/services/auth/repository/rpc"
 	authAPI "lang-gpt-api/services/auth/transport/api"
 	authRPC "lang-gpt-api/services/auth/transport/rpc"
+	business2 "lang-gpt-api/services/card/business"
+	mysql2 "lang-gpt-api/services/card/repository/mysql"
+	api2 "lang-gpt-api/services/card/transport/api"
 	"lang-gpt-api/services/gpt/business"
 	"lang-gpt-api/services/gpt/repository/mysql"
 	"lang-gpt-api/services/gpt/transport/api"
@@ -43,6 +46,11 @@ type AuthService interface {
 type GptService interface {
 	CreateMessage() func(c *gin.Context)
 	GetListMessage() func(c *gin.Context)
+}
+
+type CardService interface {
+	CreateCard() gin.HandlerFunc
+	GetListCard() gin.HandlerFunc
 }
 
 func ComposeUserAPIService(serviceCtx sctx.ServiceContext) UserService {
@@ -114,4 +122,15 @@ func ComposeGptService(serviceCtx sctx.ServiceContext) GptService {
 	gptService := api.NewAPI(serviceCtx, biz)
 
 	return gptService
+}
+
+func ComposeCardService(serviceCtx sctx.ServiceContext) CardService {
+	db := serviceCtx.MustGet(common.KeyCompMySQL).(common.GormComponent)
+	cardRepo := mysql2.NewMysqlRepoCard(db)
+
+	biz := business2.NewCardBusiness(cardRepo)
+
+	cardService := api2.NewApi(serviceCtx, biz)
+
+	return cardService
 }

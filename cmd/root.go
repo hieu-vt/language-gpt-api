@@ -80,6 +80,7 @@ func SetupRoutes(router *gin.RouterGroup, serviceCtx sctx.ServiceContext) {
 	taskAPIService := composer.ComposeTaskAPIService(serviceCtx)
 	authAPIService := composer.ComposeAuthAPIService(serviceCtx)
 	gptAPIService := composer.ComposeGptService(serviceCtx)
+	cardAPIService := composer.ComposeCardService(serviceCtx)
 
 	requireAuthMdw := middleware.RequireAuth(composer.ComposeAuthRPCClient(serviceCtx))
 
@@ -100,6 +101,12 @@ func SetupRoutes(router *gin.RouterGroup, serviceCtx sctx.ServiceContext) {
 	{
 		gpt.GET("", gptAPIService.GetListMessage())
 		gpt.POST("", gptAPIService.CreateMessage())
+	}
+
+	card := router.Group("/cards", requireAuthMdw)
+	{
+		card.GET("", cardAPIService.GetListCard())
+		card.POST("", cardAPIService.CreateCard())
 	}
 }
 

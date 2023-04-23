@@ -5,7 +5,7 @@ import (
 	"lang-gpt-api/common"
 )
 
-type FlashCard struct {
+type Card struct {
 	core.SQLModel
 	FlashCardId int    `json:"-" gorm:"column:flashcard_id"`
 	FCid        string `json:"flashCardId" gorm:"-"`
@@ -14,11 +14,11 @@ type FlashCard struct {
 	Synonyms    string `json:"synonyms" gorm:"column:synonyms"`
 }
 
-func (FlashCard) TableName() string {
+func (Card) TableName() string {
 	return "cards"
 }
 
-func (g *FlashCard) MaskCard() {
+func (g *Card) MaskCard() {
 	uid := core.NewUID(uint32(g.FlashCardId), common.MaskTypeFlashCard, 1)
 	g.FCid = uid.String()
 	g.Mask(common.MaskTypeCard)

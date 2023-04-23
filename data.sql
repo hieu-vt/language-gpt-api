@@ -68,12 +68,12 @@ CREATE TABLE `flashcards` (
 
 CREATE TABLE `cards` (
                              `id` int(11) NOT NULL AUTO_INCREMENT,
-                             `flashcard_id` int(11) NOT NULL,
+                             `flashcard_id` int(11) DEFAULT NULL,
                              `front_text` text,
                              `back_text` text,
                              `synonyms` text DEFAULT NULL,
                              `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
                              `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                              PRIMARY KEY (`id`),
-                             KEY `user_id` (`user_id`) USING BTREE
+                             KEY `created_at` (`created_at`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
