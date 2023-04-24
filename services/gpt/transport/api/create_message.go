@@ -11,6 +11,7 @@ import (
 
 type RequestBody struct {
 	Message string `json:"message"`
+	Save    bool   `json:"isSave"`
 }
 
 func (api *api) CreateMessage() func(c *gin.Context) {
@@ -27,10 +28,12 @@ func (api *api) CreateMessage() func(c *gin.Context) {
 			return
 		}
 
-		err = api.business.CreateMessageBiz(c, entity.CreateGptContexts{
-			SendMessage: body.Message,
-			GptMessage:  dataGpt.Message,
-		})
+		if body.Save {
+			err = api.business.CreateMessageBiz(c, entity.CreateGptContexts{
+				SendMessage: body.Message,
+				GptMessage:  dataGpt.Message,
+			})
+		}
 
 		if err != nil {
 			common.WriteErrorResponse(c, err)
