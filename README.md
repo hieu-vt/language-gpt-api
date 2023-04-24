@@ -1,6 +1,6 @@
 # Clean Architecture in Microservices Demo
 
-## Introduction
+## Introduction project
 
 > If you're very new to Clean Architecture, I recommend you check [more simple demo](https://github.com/viettranx/simple-clean-architecture-demo).
 
