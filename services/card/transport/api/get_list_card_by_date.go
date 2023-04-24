@@ -19,7 +19,12 @@ func (a *api) GetListCard() gin.HandlerFunc {
 			return
 		}
 
-		err, result := a.business.GetCardByDate(c, createdAt.Format("2006-01-02"))
+		requester := core.GetRequester(c)
+
+		uid, _ := core.FromBase58(requester.GetSubject())
+		requesterId := int(uid.GetLocalID()) // task owner id, id of who creates this new task
+
+		err, result := a.business.GetCardByDate(c, requesterId, createdAt.Format("2006-01-02"))
 
 		if err != nil {
 			common.WriteErrorResponse(c, core.ErrInternalServerError.WithError(err.Error()))

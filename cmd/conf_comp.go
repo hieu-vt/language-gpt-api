@@ -38,7 +38,7 @@ func (c *config) InitFlags() {
 	flag.StringVar(
 		&c.ginHost,
 		"gin-host",
-		"localhost",
+		"",
 		"gRPC server address. Default: localhost:3300",
 	)
 }

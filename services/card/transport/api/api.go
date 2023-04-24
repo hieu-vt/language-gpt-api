@@ -13,7 +13,7 @@ type ServiceContext struct {
 
 type Business interface {
 	CreateCard(ctx context.Context, data entity.Card) error
-	GetCardByDate(ctx context.Context, date string) (error, []entity.Card)
+	GetCardByDate(ctx context.Context, userId int, date string) (error, []entity.Card)
 }
 
 type api struct {

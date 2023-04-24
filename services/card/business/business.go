@@ -7,7 +7,7 @@ import (
 
 type cardRepository interface {
 	Create(ctx context.Context, data entity.Card) error
-	GetByDate(ctx context.Context, createdAt string) (error, []entity.Card)
+	GetByDate(ctx context.Context, userId int, createdAt string) (error, []entity.Card)
 }
 
 type cardBusiness struct {

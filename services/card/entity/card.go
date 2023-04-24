@@ -7,6 +7,8 @@ import (
 
 type Card struct {
 	core.SQLModel
+	UserId      int    `json:"-" gorm:"column:user_id"`
+	Uid         string `json:"userId" gorm:"-"`
 	FlashCardId int    `json:"-" gorm:"column:flashcard_id"`
 	FCid        string `json:"flashCardId" gorm:"-"`
 	FrontText   string `json:"frontText" gorm:"column:front_text"`
@@ -19,8 +21,10 @@ func (Card) TableName() string {
 }
 
 func (g *Card) MaskCard() {
-	uid := core.NewUID(uint32(g.FlashCardId), common.MaskTypeFlashCard, 1)
-	g.FCid = uid.String()
+	uid := core.NewUID(uint32(g.UserId), common.MaskTypeUser, 1)
+	g.Uid = uid.String()
+	cardId := core.NewUID(uint32(g.FlashCardId), common.MaskTypeFlashCard, 1)
+	g.FCid = cardId.String()
 	g.Mask(common.MaskTypeCard)
 }
 

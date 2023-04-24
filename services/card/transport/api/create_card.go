@@ -11,6 +11,10 @@ import (
 func (a *api) CreateCard() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var body entity.CreateCard
+		requester := core.GetRequester(c)
+
+		uid, _ := core.FromBase58(requester.GetSubject())
+		requesterId := int(uid.GetLocalID()) // task owner id, id of who creates this new task
 
 		if err := c.ShouldBind(&body); err != nil {
 			common.WriteErrorResponse(c, core.ErrBadRequest.WithError(err.Error()))
@@ -21,6 +25,7 @@ func (a *api) CreateCard() gin.HandlerFunc {
 			FrontText: body.FrontText,
 			BackText:  body.BackText,
 			Synonyms:  body.Synonyms,
+			UserId:    requesterId,
 		}); err != nil {
 			common.WriteErrorResponse(c, core.ErrInternalServerError.WithError(err.Error()))
 			return
