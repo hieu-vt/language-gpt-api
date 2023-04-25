@@ -29,15 +29,12 @@ func (api *api) CreateMessage() func(c *gin.Context) {
 		}
 
 		if body.Save {
-			err = api.business.CreateMessageBiz(c, entity.CreateGptContexts{
-				SendMessage: body.Message,
-				GptMessage:  dataGpt.Message,
-			})
-		}
-
-		if err != nil {
-			common.WriteErrorResponse(c, err)
-			return
+			go func(sendMessage string, gptMessage string) {
+				_ = api.business.CreateMessageBiz(c, entity.CreateGptContexts{
+					SendMessage: sendMessage,
+					GptMessage:  gptMessage,
+				})
+			}(body.Message, dataGpt.Message)
 		}
 
 		c.JSON(http.StatusOK, core.ResponseData(entity.CreateGptContexts{
